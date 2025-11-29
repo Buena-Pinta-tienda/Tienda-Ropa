@@ -103,83 +103,154 @@
     margin-bottom: 5px;
 }
 
-/*PRODUCTOS*/
+/*NUESTRA TIENDA*/
 
-.productos {
-    max-width: 1400px;
+.sobreNosotros {
+    max-width: 1200px;
     margin: 60px auto;
     padding: 0 20px;
 }
 
-.ordenProduc {
-    display: grid;
-    grid-template-columns: repeat(4, 1fr);
-    gap: 30px;
+.titulo-seccion {
+    text-align: center;
+    margin-bottom: 50px;
 }
 
-.cardProduc {
-    background: #fff;
-    border-radius: 8px;
-    overflow: hidden;
-    transition: transform 0.3s, box-shadow 0.3s;
-    cursor: pointer;
-}
-
-.cardProduc:hover {
-    transform: translateY(-5px);
-    box-shadow: 0 10px 25px rgba(0,0,0,0.1);
-}
-
-.imgProduc {
-    width: 100%;
-    height: 370px;
-    overflow: hidden;
-    background: #f5f5f5;
-}
-
-.imgProduc img {
-    width: 100%;
-    height: 100%;
-    object-fit: cover;
-    transition: transform 0.3s;
-}
-
-.cardProduc:hover .producto-img img {
-    transform: scale(1.05);
-}
-
-.infoProduc {
-    padding: 20px;
-}
-
-.nameP {
-    font-size: 16px;
-    font-weight: 500;
+.titulo-seccion h2 {
+    font-size: 2.5rem;
+    color: #2c3e50;
     margin-bottom: 10px;
-    color: #333;
+    font-weight: 700;
+    letter-spacing: 1px;
 }
 
-.producto-precio {
-    font-size: 20px;
+.titulo-seccion .linea-decorativa {
+    width: 80px;
+    height: 4px;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+    margin: 0 auto;
+    border-radius: 2px;
+}
+
+.contenido-sobre {
+    display: flex;
+    flex-wrap: wrap;
+    gap: 30px;
+    margin-bottom: 50px;
+    justify-content: center;
+}
+
+.card-info {
+    flex: 0 1 calc(33.333% - 20px);
+    min-width: 300px;
+    max-width: 380px;
+}
+
+.card-info {
+    background: white;
+    border-radius: 15px;
+    padding: 40px 30px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+    position: relative;
+    overflow: hidden;
+}
+
+.card-info::before {
+    content: '';
+    position: absolute;
+    top: 0;
+    left: 0;
+    width: 100%;
+    height: 5px;
+    background: linear-gradient(90deg, #ff6b6b, #4ecdc4);
+}
+
+.card-info:hover {
+    transform: translateY(-10px);
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.15);
+}
+
+.card-info .icono {
+    width: 60px;
+    height: 60px;
+    background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+    border-radius: 50%;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 20px;
+    font-size: 2rem;
+}
+
+.card-info.mision .icono {
+    background: linear-gradient(135deg, #f093fb 0%, #f5576c 100%);
+}
+
+.card-info.vision .icono {
+    background: linear-gradient(135deg, #4facfe 0%, #00f2fe 100%);
+}
+
+.card-info.valores .icono {
+    background: linear-gradient(135deg, #43e97b 0%, #38f9d7 100%);
+}
+
+.card-info h3 {
+    font-size: 1.8rem;
+    color: #2c3e50;
+    margin-bottom: 15px;
+    font-weight: 600;
+}
+
+.card-info p {
+    color: #555;
+    line-height: 1.8;
+    font-size: 1rem;
+}
+
+.valores-lista {
+    list-style: none;
+    margin-top: 15px;
+}
+
+.valores-lista li {
+    padding: 10px 0;
+    color: #555;
+    position: relative;
+    padding-left: 25px;
+}
+
+.valores-lista li::before {
+    content: '✓';
+    position: absolute;
+    left: 0;
+    color: #43e97b;
     font-weight: bold;
-    color: #000;
+    font-size: 1.2rem;
 }
 
-.producto-precio-antes {
-    font-size: 16px;
-    color: #999;
-    text-decoration: line-through;
-    margin-left: 10px;
+.historia-seccion {
+    background: white;
+    border-radius: 15px;
+    padding: 50px;
+    box-shadow: 0 5px 20px rgba(0, 0, 0, 0.1);
+    margin-top: 30px;
 }
 
-.descuento {
-    background: #ff4444;
-    color: white;
-    padding: 4px 8px;
-    border-radius: 4px;
-    font-size: 12px;
-    display: inline-block;
-    margin-top: 5px;
+.historia-seccion h3 {
+    font-size: 2rem;
+    color: #2c3e50;
+    margin-bottom: 20px;
+    text-align: center;
+}
+
+.historia-seccion p {
+    color: #555;
+    line-height: 1.9;
+    font-size: 1.1rem;
+    text-align: center;
+    max-width: 900px;
+    margin: 0 auto;
 }
 
 /* BANNER PROMOCIONAL */
@@ -320,6 +391,39 @@
     .banner p {
         font-size: 18px;
     }
+
+    .sobre-nosotros {
+        padding: 0 30px;
+    }
+
+    .titulo-seccion h2 {
+        font-size: 2.2rem;
+    }
+
+    .contenido-sobre {
+        gap: 25px;
+    }
+
+    .card-info {
+        flex: 0 1 calc(50% - 15px);
+        min-width: 280px;
+    }
+
+    .card-info:last-child {
+        flex: 0 1 calc(50% - 15px);
+    }
+
+    .historia-seccion {
+        padding: 40px 30px;
+    }
+
+    .historia-seccion h3 {
+        font-size: 1.8rem;
+    }
+
+    .historia-seccion p {
+        font-size: 1.05rem;
+    }
 }
 
 /* MOBILE (320px - 767px) */
@@ -397,6 +501,62 @@
         padding: 12px 30px;
         font-size: 14px;
     }
+
+    .sobre-nosotros {
+        margin: 40px auto;
+        padding: 0 15px;
+    }
+
+    .titulo-seccion {
+        margin-bottom: 35px;
+    }
+
+    .titulo-seccion h2 {
+        font-size: 1.8rem;
+    }
+
+    .contenido-sobre {
+        gap: 20px;
+    }
+
+    .card-info {
+        flex: 1 1 100%;
+        padding: 30px 20px;
+        min-width: auto;
+    }
+
+    .card-info .icono {
+        width: 55px;
+        height: 55px;
+        font-size: 1.3rem;
+    }
+
+    .card-info h3 {
+        font-size: 1.5rem;
+    }
+
+    .card-info p {
+        font-size: 0.95rem;
+    }
+
+    .valores-lista li {
+        font-size: 0.95rem;
+        padding: 8px 0;
+    }
+
+    .historia-seccion {
+        padding: 30px 20px;
+    }
+
+    .historia-seccion h3 {
+        font-size: 1.5rem;
+        margin-bottom: 15px;
+    }
+
+    .historia-seccion p {
+        font-size: 0.95rem;
+        line-height: 1.7;
+    }
 }
 
 /* MOBILE PEQUEÑO (320px) */
@@ -407,5 +567,66 @@
     
     .imgProduc {
         height: 280px;
+    }
+    .sobre-nosotros {
+        margin: 30px auto;
+        padding: 0 10px;
+    }
+
+    .titulo-seccion h2 {
+        font-size: 1.5rem;
+    }
+
+    .titulo-seccion .linea-decorativa {
+        width: 60px;
+        height: 3px;
+    }
+
+    .contenido-sobre {
+        gap: 15px;
+    }
+
+    .card-info {
+        padding: 25px 15px;
+    }
+
+    .card-info .icono {
+        width: 50px;
+        height: 50px;
+        font-size: 1.2rem;
+        margin-bottom: 15px;
+    }
+
+    .card-info h3 {
+        font-size: 1.3rem;
+        margin-bottom: 12px;
+    }
+
+    .card-info p {
+        font-size: 0.9rem;
+    }
+
+    .valores-lista li {
+        font-size: 0.9rem;
+        padding: 7px 0;
+        padding-left: 20px;
+    }
+
+    .valores-lista li::before {
+        font-size: 1rem;
+    }
+
+    .historia-seccion {
+        padding: 25px 15px;
+        margin-top: 20px;
+    }
+
+    .historia-seccion h3 {
+        font-size: 1.3rem;
+    }
+
+    .historia-seccion p {
+        font-size: 0.9rem;
+        line-height: 1.6;
     }
 }
