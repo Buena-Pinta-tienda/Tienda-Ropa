@@ -1,77 +1,42 @@
-const productos = [
-{
-        id: 1,
-        nombre: "Falda Lapiz de Punto Elastico",
-        precio: 39.90,
-        categoria: "Faldas",
-        imagen: "/Imagenes/Productos/FALDA_LAPIZ.jpg"
-    },
-    {
-        id: 2,
-        nombre: "Pantalon Bota Recta",
-        precio: 159.90,
-        categoria: "Pantalones",
-        imagen: "/Imagenes/Productos/Pantalon recto.jpg"
-    },
-    {
-        id: 3,
-        nombre: "Blusa Manga Corta de Gasa",
-        precio: 59.90,
-        categoria: "Blusas",
-        imagen: "/Imagenes/Productos/blusaBlanca.jpg"
-    },
-    {
-        id: 4,
-        nombre: "Falda Denim con Abertura",
-        precio: 149.90,
-        categoria: "Faldas",
-        imagen: "/Imagenes/Productos/faldadenim.jpg"
-    },
-    {
-        id: 5,
-        nombre: "Jean Skinny Alto",
-        precio: 89.90,
-        categoria: "Jeans",
-        imagen: "/Imagenes/Productos/jeanskinnyy.jpg"
-    },
-    {
-        id: 6,
-        nombre: "Vestido Midi Casual",
-        precio: 129.90,
-        categoria: "Vestidos",
-        imagen: "/Imagenes/Productos/vestidobeige.jpg"
-    },
-    {
-        id: 7,
-        nombre: "Blusa Satinada Basica",
-        precio: 79.90,
-        categoria: "Blusas",
-        imagen: "/Imagenes/Productos/blusanegra.jpg"
-    },
-    {
-        id: 8,
-        nombre: "Pantalon Cargo",
-        precio: 99.90,
-        categoria: "Pantalones",
-        imagen: "/Imagenes/Productos/pantaloncargo.jpg"
-    },
-    {
-        id: 9,
-        nombre: "Falda Plisada Larga",
-        precio: 69.90,
-        categoria: "Faldas",
-        imagen: "/Imagenes/Productos/faldaverde.jpg"
-    },
-    {
-        id: 10,
-        nombre: "Vestido Corto Floral",
-        precio: 99.90,
-        categoria: "Vestidos",
-        imagen: "/Imagenes/Productos/vestidofloral.jpg"
-    },
-];
+// Variable global para almacenar productos
+let productos = [];
 
-document.addEventListener('DOMContentLoaded', function() {
+// Cargar productos desde la API
+async function cargarProductosParaBusqueda() {
+    try {
+        const response = await fetch('http://localhost:3000/api/products');
+        if (!response.ok) {
+            throw new Error('Error al cargar productos');
+        }
+        const data = await response.json();
+        
+        // Obtener imágenes del cache de localStorage
+        const productCache = JSON.parse(localStorage.getItem('product_images') || '{}');
+        
+        // Mapear productos al formato esperado
+        productos = data.map(producto => {
+            const cache = productCache[producto.id] || {};
+            return {
+                id: producto.id,
+                nombre: cache.nombre || producto.title,
+                nombreOriginal: producto.title, // Guardar el título original de la DB
+                precio: parseFloat(producto.price),
+                categoria: producto.category || 'General',
+                imagen: cache.img1 || producto.image_url || 'https://via.placeholder.com/50'
+            };
+        });
+        
+        console.log('Productos cargados para búsqueda:', productos.length);
+        console.log('Productos:', productos.map(p => p.nombre));
+    } catch (error) {
+        console.error('Error al cargar productos para búsqueda:', error);
+        productos = [];
+    }
+}
+
+document.addEventListener('DOMContentLoaded', async function() {
+    // Cargar productos primero
+    await cargarProductosParaBusqueda();
     
     const searchWrapper = document.querySelector('.search-wrapper');
     const searchBtn = document.querySelector('.search-btn');
@@ -84,17 +49,27 @@ document.addEventListener('DOMContentLoaded', function() {
         return;
     }
 
+    // Función para normalizar texto (quitar acentos)
+    function normalizeText(text) {
+        return text.normalize('NFD').replace(/[\u0300-\u036f]/g, '').toLowerCase();
+    }
+
     // funcion busqueda
     function buscarProductos(query) {
         if (!query || query.length < 2) {
             return [];
         }
 
-        const queryLower = query.toLowerCase().trim();
+        const queryNormalized = normalizeText(query.trim());
         
         return productos.filter(producto => {
-            return producto.nombre.toLowerCase().includes(queryLower) ||
-                producto.categoria.toLowerCase().includes(queryLower);
+            const nombreNormalized = normalizeText(producto.nombre);
+            const nombreOriginalNormalized = normalizeText(producto.nombreOriginal || '');
+            const categoriaNormalized = normalizeText(producto.categoria);
+            
+            return nombreNormalized.includes(queryNormalized) ||
+                   nombreOriginalNormalized.includes(queryNormalized) ||
+                   categoriaNormalized.includes(queryNormalized);
         });
     }
 
@@ -103,6 +78,15 @@ document.addEventListener('DOMContentLoaded', function() {
         if (!query) return text;
         const regex = new RegExp(`(${query})`, 'gi');
         return text.replace(regex, '<span class="highlight">$1</span>');
+    }
+
+    // Validar si una imagen existe
+    function getValidImageSrc(imageSrc) {
+        // Si no hay imagen o es placeholder, usar directamente placeholder
+        if (!imageSrc || imageSrc.includes('placeholder')) {
+            return 'data:image/svg+xml,%3Csvg xmlns="http://www.w3.org/2000/svg" width="50" height="50"%3E%3Crect fill="%23ddd" width="50" height="50"/%3E%3Ctext fill="%23999" x="50%25" y="50%25" text-anchor="middle" dy=".3em"%3E?%3C/text%3E%3C/svg%3E';
+        }
+        return imageSrc;
     }
 
     // mostrar sugerencias de productos
@@ -117,9 +101,10 @@ document.addEventListener('DOMContentLoaded', function() {
 
         let html = '';
         resultados.slice(0, 6).forEach(producto => {
+            const imgSrc = getValidImageSrc(producto.imagen);
             html += `
                 <div class="suggestion-item" data-id="${producto.id}">
-                    <img src="${producto.imagen}" alt="${producto.nombre}" class="suggestion-img" onerror="this.src='https://via.placeholder.com/50'">
+                    <img src="${imgSrc}" alt="${producto.nombre}" class="suggestion-img" loading="lazy" style="opacity: 0; transition: opacity 0.2s;" onload="this.style.opacity=1">
                     <div class="suggestion-info">
                         <div class="suggestion-name">${highlightText(producto.nombre, query)}</div>
                         <div class="suggestion-category">${producto.categoria}</div>
