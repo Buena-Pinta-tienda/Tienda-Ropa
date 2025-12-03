@@ -87,7 +87,6 @@ Tienda-Ropa-main/
 - El archivo `JS/carrito.js` ahora hace llamadas a la API
 - Cuando agregas un producto al carrito, se guarda en PostgreSQL
 - El contador del carrito se actualiza desde la base de datos
-- Todo funciona de forma transparente con tu HTML/CSS existente
 
 ## Si necesitas reiniciar el servidor:
 
