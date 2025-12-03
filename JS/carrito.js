@@ -542,10 +542,12 @@ function mostrarBoleta(data) {
                 </div>
                 <div class="boleta-footer">
                     <div class="boleta-mensaje">¡Gracias por tu compra!</div>
-                    <button class="btn-imprimir-boleta" onclick="window.print()">
-                        <i class="fa-solid fa-print"></i> Imprimir
-                    </button>
-                    <button class="btn-cerrar-boleta" onclick="cerrarBoleta()">Cerrar</button>
+                    <div style="display: flex; gap: 10px; justify-content: center; margin-top: 15px;">
+                        <button class="btn-imprimir-boleta" onclick="window.print()">
+                            <i class="fa-solid fa-print"></i> Imprimir
+                        </button>
+                        <button class="btn-cerrar-boleta" onclick="cerrarBoleta()">Cerrar</button>
+                    </div>
                 </div>
             </div>
         </div>
