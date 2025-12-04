@@ -4,7 +4,10 @@ document.addEventListener('DOMContentLoaded', function() {
     const menu = document.getElementById('Menu');
     const menuOverlay = document.getElementById('menuOverlay');
     
-    if (!menuToggle || !menu || !menuOverlay) return;
+    if (!menuToggle || !menu || !menuOverlay) {
+        console.error('Elementos del menú no encontrados');
+        return;
+    }
     
     const menuIcon = menuToggle.querySelector('i');
     
@@ -17,11 +20,11 @@ document.addEventListener('DOMContentLoaded', function() {
         if (menu.classList.contains('active')) {
             menuIcon.classList.remove('fa-bars');
             menuIcon.classList.add('fa-times');
-            document.body.style.overflow = 'hidden'; // Evitar scroll
+            document.body.style.overflow = 'hidden';
         } else {
             menuIcon.classList.add('fa-bars');
             menuIcon.classList.remove('fa-times');
-            document.body.style.overflow = ''; // Restaurar scroll
+            document.body.style.overflow = '';
         }
     });
     
