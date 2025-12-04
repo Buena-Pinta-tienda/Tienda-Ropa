@@ -1,5 +1,6 @@
 // Script para renderizar productos dinámicamente desde la API
 // Este script se usa en páginas de categorías: hombre.html, mujer.html, calzado.html, accesorios.html
+// Última actualización: 2025-12-03 - Sistema de favoritos integrado con backend
 
 const API_URL = 'https://tienda-ropa-production.up.railway.app/api';
 
