@@ -43,7 +43,7 @@ npm start
 - ✅ Productos dinámicos desde base de datos
 - ✅ Proceso de compra completo con boleta
 
-## 📝 Estructura del Proyecto
+
 
 ```
 ├── public/          # Páginas HTML
