@@ -54,10 +54,29 @@ async function cargarYRenderizarProductos() {
         }
         
         // Renderizar productos
+        const favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+        
         productosFiltrados.forEach(producto => {
             const card = crearTarjetaProducto(producto);
+            
+            // Marcar como favorito si ya está guardado
+            const btnFav = card.querySelector('.fav-btn');
+            if (btnFav) {
+                const esFavorito = favoritos.find(f => f.id === producto.id.toString());
+                if (esFavorito) {
+                    btnFav.classList.add('active');
+                }
+            }
+            
             grid.appendChild(card);
         });
+        
+        // Actualizar contador de favoritos
+        const contador = document.querySelector('.fav-contador');
+        if (contador) {
+            contador.textContent = favoritos.length;
+            contador.style.display = favoritos.length > 0 ? 'flex' : 'none';
+        }
         
         console.log(`✅ ${productosFiltrados.length} productos de "${categoria}" cargados desde Neon PostgreSQL`);
         
@@ -110,7 +129,37 @@ function crearTarjetaProducto(producto) {
     if (btnFav) {
         btnFav.addEventListener('click', function(e) {
             e.preventDefault();
-            // Aquí puedes agregar la lógica de favoritos si existe
+            
+            // Obtener favoritos del localStorage
+            let favoritos = JSON.parse(localStorage.getItem('favoritos') || '[]');
+            
+            // Si ya es favorito, quitarlo
+            if (this.classList.contains('active')) {
+                this.classList.remove('active');
+                favoritos = favoritos.filter(f => f.id !== producto.id.toString());
+            } 
+            // Si no es favorito, agregarlo
+            else {
+                this.classList.add('active');
+                favoritos.push({
+                    id: producto.id.toString(),
+                    nombre: producto.title,
+                    precio: `S/ ${parseFloat(producto.price).toFixed(2)}`,
+                    img1: imagenPrincipal,
+                    img2: imagenSecundaria || imagenPrincipal
+                });
+            }
+            
+            // Guardar en localStorage
+            localStorage.setItem('favoritos', JSON.stringify(favoritos));
+            
+            // Actualizar contador
+            const contador = document.querySelector('.fav-contador');
+            if (contador) {
+                contador.textContent = favoritos.length;
+                contador.style.display = favoritos.length > 0 ? 'flex' : 'none';
+            }
+            
             console.log('Producto agregado a favoritos:', producto.id);
         });
     }
